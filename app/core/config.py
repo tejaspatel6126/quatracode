@@ -55,6 +55,16 @@ class Settings(BaseSettings):
     # Maximum response body bytes to read into memory (5 MB default)
     MAX_RESPONSE_SIZE: int = 5 * 1024 * 1024
 
+    # ── Network Discovery / Nmap (Phase 04) ──────────────────────────────────
+    # Set to False to disable Nmap-based port discovery entirely
+    NMAP_ENABLED: bool = True
+    # Path to nmap binary (auto-detected from PATH if empty string)
+    NMAP_BINARY: str = "nmap"
+    # Maximum wall-clock seconds for a single nmap run
+    NMAP_TIMEOUT: float = 30.0
+    # Maximum number of ports to scan (prevents accidental full scans)
+    NMAP_MAX_PORTS: int = 20
+
     # ── CORS ──────────────────────────────────────────────────────────────────
     CORS_ORIGINS: str = "http://localhost:8000,http://127.0.0.1:8000"
 
