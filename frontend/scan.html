@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Run a new security scan or view results — SecureAudit." />
+  <title>Scan — SecureAudit</title>
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+  <aside id="sidebar" class="sidebar" aria-label="Primary navigation">
+    <a href="/dashboard.html" class="sidebar-brand">
+      <div class="sidebar-logo" aria-hidden="true">🛡</div>
+      <div>
+        <div class="sidebar-name">SecureAudit</div>
+        <div class="sidebar-tagline">Security Auditor</div>
+      </div>
+    </a>
+    <nav class="sidebar-nav" aria-label="App navigation">
+      <a href="/dashboard.html" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">⊞</span> Dashboard
+      </a>
+      <a href="/scan.html" class="nav-item active" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">＋</span> New Scan
+      </a>
+      <a href="/history.html" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">≡</span> Scan History
+      </a>
+      <a href="/api/docs" class="nav-item" target="_blank" rel="noopener">
+        <span class="nav-icon" aria-hidden="true">⇗</span> API Docs
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div id="sidebar-avatar" class="sidebar-avatar" aria-hidden="true">U</div>
+        <div class="sidebar-user-info">
+          <div id="sidebar-username" class="sidebar-username">Loading…</div>
+          <div id="sidebar-email" class="sidebar-email"></div>
+        </div>
+      </div>
+      <button id="logout-btn" class="sidebar-logout" type="button">
+        <span aria-hidden="true">⏻</span> Sign out
+      </button>
+    </div>
+  </aside>
+  <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+  <!-- ── Main ─────────────────────────────────────────────────────────── -->
+  <div class="main-content">
+    <header class="topbar" role="banner">
+      <button id="menu-toggle" class="menu-toggle" aria-label="Toggle navigation">☰</button>
+      <h1 class="topbar-title" id="page-heading">Security Scan</h1>
+      <div class="topbar-actions">
+        <a href="/history.html" class="btn btn-secondary btn-sm">History</a>
+      </div>
+    </header>
+
+    <main class="page-content" id="main-content">
+
+      <!-- ── New scan form (shown when no ?id) ────────────────────────── -->
+      <section id="new-scan-section" class="section" aria-labelledby="new-scan-heading">
+        <div class="scan-form-card">
+          <h2 id="new-scan-heading" class="section-title" style="margin-bottom:var(--space-4)">Start a Security Scan</h2>
+          <p class="text-secondary text-sm" style="margin-bottom:var(--space-4)">
+            Enter the full URL of the target website to audit its security configuration.
+            Only public HTTP and HTTPS targets are supported.
+          </p>
+
+          <div id="scan-alert" class="alert" role="alert" aria-live="polite"></div>
+
+          <div class="form-group" style="max-width:40rem">
+            <label class="form-label" for="target-url">Target URL</label>
+            <div class="scan-url-row">
+              <input
+                id="target-url"
+                type="url"
+                class="form-input"
+                placeholder="https://example.com"
+                aria-describedby="url-hint"
+                autocomplete="url"
+              />
+              <button id="start-scan-btn" class="btn btn-primary" type="button">
+                Start Scan
+              </button>
+            </div>
+            <p id="url-hint" class="form-hint">
+              Must begin with <code>https://</code> or <code>http://</code>.
+              Internal IPs, localhost and private networks are blocked.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Scan status (shown while running) ────────────────────────── -->
+      <section id="status-section" class="section hidden" aria-labelledby="status-heading" aria-live="polite">
+        <div class="scan-status-block">
+          <span class="spinner spinner-lg" aria-hidden="true"></span>
+          <div id="status-badge-wrap"></div>
+          <div class="scan-status-label">
+            <span id="status-text">Initialising scan…</span>
+          </div>
+          <div class="scan-status-target" id="status-target"></div>
+          <button id="cancel-btn" class="btn btn-secondary btn-sm" type="button">Cancel</button>
+        </div>
+      </section>
+
+      <!-- ── Results (shown after completion) ─────────────────────────── -->
+      <section id="results-section" class="section hidden" aria-labelledby="results-heading">
+        <div id="results-alert" class="alert" role="alert" aria-live="polite"></div>
+
+        <!-- Header row -->
+        <div class="page-header">
+          <div class="page-header-left">
+            <h2 id="results-heading" class="page-title" id="results-target-heading">Scan Results</h2>
+            <p class="page-subtitle" id="results-meta"></p>
+          </div>
+          <button id="new-scan-btn" class="btn btn-secondary btn-sm" type="button">New Scan</button>
+        </div>
+
+        <!-- Risk score -->
+        <div class="section">
+          <div class="risk-score-panel" id="risk-panel">
+            <div class="risk-score-dial" id="risk-dial">
+              <span class="risk-score-number" id="risk-number">—</span>
+              <span class="risk-score-max">/ 100</span>
+            </div>
+            <div class="risk-score-info">
+              <div class="risk-score-level" id="risk-level-label">—</div>
+              <div class="risk-score-desc" id="risk-level-desc"></div>
+              <div class="severity-row" id="severity-row"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Findings -->
+        <div class="section">
+          <div class="section-header">
+            <h3 class="section-title">Security Findings</h3>
+            <p class="section-desc" id="findings-count-desc"></p>
+          </div>
+          <div id="findings-container"></div>
+        </div>
+
+        <!-- Raw scanner data (TLS, Headers, Cookies, etc.) -->
+        <div id="scanner-details"></div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- Finding detail modal -->
+<div id="finding-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-title">Finding Detail</h2>
+      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/ui.js"></script>
+<script src="/js/scan.js"></script>
+</body>
+</html>

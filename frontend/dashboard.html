@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SecureAudit Dashboard — overview of your security scans." />
+  <title>Dashboard — SecureAudit</title>
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+  <aside id="sidebar" class="sidebar" aria-label="Primary navigation">
+    <a href="/dashboard.html" class="sidebar-brand">
+      <div class="sidebar-logo" aria-hidden="true">🛡</div>
+      <div>
+        <div class="sidebar-name">SecureAudit</div>
+        <div class="sidebar-tagline">Security Auditor</div>
+      </div>
+    </a>
+
+    <nav class="sidebar-nav" aria-label="App navigation">
+      <a href="/dashboard.html" class="nav-item active" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">⊞</span> Dashboard
+      </a>
+      <a href="/scan.html" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">＋</span> New Scan
+      </a>
+      <a href="/history.html" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">≡</span> Scan History
+      </a>
+      <a href="/api/docs" class="nav-item" target="_blank" rel="noopener">
+        <span class="nav-icon" aria-hidden="true">⇗</span> API Docs
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div id="sidebar-avatar" class="sidebar-avatar" aria-hidden="true">U</div>
+        <div class="sidebar-user-info">
+          <div id="sidebar-username" class="sidebar-username">Loading…</div>
+          <div id="sidebar-email" class="sidebar-email"></div>
+        </div>
+      </div>
+      <button id="logout-btn" class="sidebar-logout" type="button">
+        <span aria-hidden="true">⏻</span> Sign out
+      </button>
+    </div>
+  </aside>
+
+  <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+  <!-- ── Main ─────────────────────────────────────────────────────────── -->
+  <div class="main-content">
+    <header class="topbar" role="banner">
+      <button id="menu-toggle" class="menu-toggle" aria-label="Toggle navigation" aria-controls="sidebar">☰</button>
+      <h1 class="topbar-title">Dashboard</h1>
+      <div class="topbar-actions">
+        <a href="/scan.html" class="btn btn-primary btn-sm">+ New Scan</a>
+      </div>
+    </header>
+
+    <main class="page-content" id="main-content">
+
+      <!-- Quick scan bar -->
+      <section class="scan-form-card section" aria-labelledby="quick-scan-heading">
+        <h2 id="quick-scan-heading" class="section-title" style="margin-bottom:var(--space-4)">Start a Security Scan</h2>
+        <div id="quick-alert" class="alert" role="alert" aria-live="polite"></div>
+        <div class="scan-url-row">
+          <label for="quick-url" class="sr-only">Target URL</label>
+          <input
+            id="quick-url"
+            type="url"
+            class="form-input"
+            placeholder="https://example.com"
+            aria-label="Target URL to scan"
+          />
+          <button id="quick-scan-btn" class="btn btn-primary" type="button">
+            Start Scan
+          </button>
+        </div>
+        <p class="form-hint" style="margin-top:var(--space-2)">
+          Enter a public URL — only HTTPS and HTTP targets are supported.
+        </p>
+      </section>
+
+      <!-- Stats -->
+      <section class="section" aria-labelledby="stats-heading">
+        <h2 id="stats-heading" class="sr-only">Scan statistics</h2>
+        <div class="stat-grid" id="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Scans</div>
+            <div class="stat-value" id="stat-total">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Completed</div>
+            <div class="stat-value" id="stat-completed">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">In Progress</div>
+            <div class="stat-value" id="stat-running">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Failed</div>
+            <div class="stat-value" id="stat-failed">—</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent scans -->
+      <section class="section" aria-labelledby="recent-heading">
+        <div class="section-header">
+          <h2 id="recent-heading" class="section-title">Recent Scans</h2>
+        </div>
+        <div class="card">
+          <div id="recent-scans-container" class="card-body">
+            <div class="loading-state">
+              <span class="spinner" aria-hidden="true"></span>
+              <span>Loading recent scans…</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/ui.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

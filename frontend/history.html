@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Scan history — SecureAudit." />
+  <title>Scan History — SecureAudit</title>
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+  <aside id="sidebar" class="sidebar" aria-label="Primary navigation">
+    <a href="/dashboard.html" class="sidebar-brand">
+      <div class="sidebar-logo" aria-hidden="true">🛡</div>
+      <div>
+        <div class="sidebar-name">SecureAudit</div>
+        <div class="sidebar-tagline">Security Auditor</div>
+      </div>
+    </a>
+    <nav class="sidebar-nav" aria-label="App navigation">
+      <a href="/dashboard.html" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">⊞</span> Dashboard
+      </a>
+      <a href="/scan.html" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">＋</span> New Scan
+      </a>
+      <a href="/history.html" class="nav-item active" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">≡</span> Scan History
+      </a>
+      <a href="/api/docs" class="nav-item" target="_blank" rel="noopener">
+        <span class="nav-icon" aria-hidden="true">⇗</span> API Docs
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div id="sidebar-avatar" class="sidebar-avatar" aria-hidden="true">U</div>
+        <div class="sidebar-user-info">
+          <div id="sidebar-username" class="sidebar-username">Loading…</div>
+          <div id="sidebar-email" class="sidebar-email"></div>
+        </div>
+      </div>
+      <button id="logout-btn" class="sidebar-logout" type="button">
+        <span aria-hidden="true">⏻</span> Sign out
+      </button>
+    </div>
+  </aside>
+  <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+  <!-- ── Main ─────────────────────────────────────────────────────────── -->
+  <div class="main-content">
+    <header class="topbar" role="banner">
+      <button id="menu-toggle" class="menu-toggle" aria-label="Toggle navigation">☰</button>
+      <h1 class="topbar-title">Scan History</h1>
+      <div class="topbar-actions">
+        <a href="/scan.html" class="btn btn-primary btn-sm">+ New Scan</a>
+      </div>
+    </header>
+
+    <main class="page-content" id="main-content">
+
+      <div id="history-alert" class="alert" role="alert" aria-live="polite"></div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">All Security Scans</span>
+          <span id="history-count" class="text-muted text-sm"></span>
+        </div>
+
+        <!-- Table -->
+        <div id="history-container">
+          <div class="loading-state">
+            <span class="spinner" aria-hidden="true"></span>
+            <span>Loading scan history…</span>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="card-footer">
+          <div class="pagination" id="pagination" aria-label="Pagination">
+            <span id="pagination-info" class="pagination-info"></span>
+            <div class="pagination-controls">
+              <button id="prev-btn" class="btn btn-secondary btn-sm" disabled type="button" aria-label="Previous page">← Prev</button>
+              <button id="next-btn" class="btn btn-secondary btn-sm" disabled type="button" aria-label="Next page">Next →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/ui.js"></script>
+<script src="/js/history.js"></script>
+</body>
+</html>
