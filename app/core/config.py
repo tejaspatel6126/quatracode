@@ -37,6 +37,24 @@ class Settings(BaseSettings):
     DB_POOL_TIMEOUT: int = 30
     DB_POOL_RECYCLE: int = 1800
 
+    # ── Scanner Network Security (Phase 03) ──────────────────────────────────
+    # Allowed URL schemes for scan targets
+    ALLOWED_SCHEMES: str = "http,https"
+    # Allowed ports (empty string = only default 80/443 per scheme)
+    ALLOWED_PORTS: str = "80,443"
+    # DNS resolution timeout in seconds
+    DNS_TIMEOUT: float = 5.0
+    # TCP connect timeout in seconds (SECURITY.md §15)
+    CONNECT_TIMEOUT: float = 5.0
+    # Response read timeout in seconds
+    READ_TIMEOUT: float = 10.0
+    # Overall per-request wall-clock timeout in seconds
+    REQUEST_TIMEOUT: float = 30.0
+    # Maximum redirects to follow (SECURITY.md §15)
+    MAX_REDIRECTS: int = 10
+    # Maximum response body bytes to read into memory (5 MB default)
+    MAX_RESPONSE_SIZE: int = 5 * 1024 * 1024
+
     # ── CORS ──────────────────────────────────────────────────────────────────
     CORS_ORIGINS: str = "http://localhost:8000,http://127.0.0.1:8000"
 
